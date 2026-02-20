@@ -22,10 +22,10 @@ const Footer = () => {
   }
 
   const socialIcons = [
-    { Icon: FaFacebook, name: 'Facebook', color: '#1877F2', link: '#' },
-    { Icon: FaInstagram, name: 'Instagram', color: '#E4405F', link: '#' },
-    { Icon: FaTwitterSquare, name: 'Twitter', color: '#1DA1F2', link: '#' },
-    { Icon: FaPinterest, name: 'Pinterest', color: '#E60023', link: '#' }
+    { Icon: FaFacebook, name: 'Facebook', link: '#' }, 
+    { Icon: FaInstagram, name: 'Instagram', link: '#' },
+    { Icon: FaTwitterSquare, name: 'Twitter', link: '#' },
+    { Icon: FaPinterest, name: 'Pinterest', link: '#' }
   ]
 
   const customerServices = [
@@ -43,7 +43,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className='relative overflow-hidden dark:bg-gradient-to-b dark:from-[#0a0818] dark:via-[#1a1535] dark:to-[#000] bg-gradient-to-b from-[#f5f3ed] via-[#eae4d5] to-[#e0d8c8] dark:text-white text-black'>
+    <footer className='relative overflow-hidden bg-[#fff] dark:bg-[#000000c5]'>
       <div className='relative px-4 pt-16 pb-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:pt-20'>
         
         {/* Main Content Grid */}
@@ -93,7 +93,7 @@ const Footer = () => {
               {features.map((feature, i) => (
                 <div
                   key={i}
-                  className='flex items-center gap-1.5 px-3 py-1.5 bg-white/50 dark:bg-white/5 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-800 transition-transform duration-200 hover:scale-105'
+                  className='flex items-center gap-1.5 px-3 py-1.5 bg-white/50 dark:bg-white/5 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-800 transition-transform duration-200 hover:scale-105 text-black dark:text-white'
                 >
                   <feature.icon className='text-[#155dfc] text-sm' />
                   <span className='text-xs font-medium'>{feature.text}</span>
@@ -134,7 +134,7 @@ const Footer = () => {
                 <a
                   key={name}
                   href={link}
-                  className='p-3 transition-all duration-300 bg-white border border-gray-200 shadow-lg group sm:p-4 rounded-2xl dark:bg-gray-900 hover:shadow-2xl dark:border-gray-800 hover:scale-110 hover:bg-[#155dfc] hover:border-[#155dfc]'
+                  className={`p-3 transition-all duration-300 bg-white border border-gray-200 shadow-lg group sm:p-4 rounded-2xl dark:bg-gray-900 hover:shadow-2xl dark:border-gray-800 hover:scale-110 hover:bg-[#155dfc] hover:border-[#155dfc]`}
                 >
                   <Icon className='text-2xl transition-colors duration-300 sm:text-3xl text-gray-700 dark:text-gray-300 group-hover:text-white' />
                 </a>
@@ -157,7 +157,7 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className='space-y-4'>
-            <h3 className='text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#155dfc] to-[#44caff] bg-clip-text text-transparent'>
+            <h3 className='text-xl sm:text-2xl font-bold text-[#155dfc]'>
               Stay in the Loop
             </h3>
             <p className='text-sm text-gray-600 dark:text-gray-400'>
@@ -220,8 +220,7 @@ const Footer = () => {
         <div className='flex flex-col items-center justify-between gap-4 pt-4 text-sm text-gray-600 border-t-2 border-gray-500 sm:flex-row dark:text-gray-400 dark:border-gray-700'>
           <p className='flex items-center gap-2 transition-transform duration-200 hover:scale-105'>
             &copy; {new Date().getFullYear()} 
-            <span className='font-bold text-[#155dfc]'>NovaShop</span>
-            . Made by Pawan
+            <span className='font-bold text-[#155dfc]'>NovaShop</span>|| Made by Pawan
           </p>
           <div className='flex items-center gap-4'>
             {['Privacy Policy', 'Terms of Service', 'Cookies'].map((link, i) => (
