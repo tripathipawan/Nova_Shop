@@ -1,296 +1,298 @@
-/* eslint-disable no-unused-vars */
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { useEffect, useRef, useState } from "react";
+
+
+
+
+
+/* eslint-disable react-hooks/set-state-in-effect */
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { IoCartOutline } from "react-icons/io5";
-import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
+import { IoCartOutline, IoHeartOutline } from "react-icons/io5";
+import { HiMenuAlt1, HiX } from "react-icons/hi";
 import { FiSun, FiMoon } from "react-icons/fi";
-import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useCart } from "../context/CartContext";
-import { useUser } from '@clerk/clerk-react'
+import { useUser } from "@clerk/clerk-react";
+import { toast } from "react-toastify";
 
-
-/* ================= NAV ITEMS ================= */
 const navItems = [
-  { name: "Home", path: "/" },
-  { name: "Products", path: "/products" },
-  { name: "About", path: "/about" },
+  { name: "Home",      path: "/" },
+  { name: "Products",  path: "/products" },
+  { name: "Wishlist",  path: "/wishlist" },
+  { name: "About",     path: "/about" },
   { name: "PolicyHub", path: "/policyHub" },
-  { name: "Contact", path: "/contact" },
+  { name: "Contact",   path: "/contact" },
 ];
 
 const Navbar = () => {
-  const { cartItem = [] } = useCart();
-  const location = useLocation();
-  const { isSignedIn } = useUser(); 
+  const { cartItem = [] }   = useCart();
+  const location            = useLocation();
+  const { isSignedIn }      = useUser();
 
-  const [openNav, setOpenNav] = useState(false);
-  const [dark, setDark] = useState(
-    () => localStorage.getItem("theme") === "dark"
-  );
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [openNav, setOpenNav]     = useState(false);
+  const [dark, setDark]           = useState(() => localStorage.getItem("theme") === "dark");
+  const [scrolled, setScrolled]   = useState(false);
+  const [scrollPct, setScrollPct] = useState(0);
 
-  const navRef = useRef([]);
-  const [indicatorStyle, setIndicatorStyle] = useState({
-    width: 0,
-    left: 0,
-  });
+  const [bar, setBar] = useState({ left: 0, width: 0 });
+  const ulRef  = useRef(null);
+  const liRefs = useRef([]);
 
-  /* ================= Scroll Progress ================= */
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 20,
-    mass: 0.3,
-  });
-
-  /* ================= Route change ================= */
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOpenNav(false);
-    const index = navItems.findIndex(
-      (item) => item.path === location.pathname
-    );
-    if (index !== -1) setActiveIndex(index);
+  const calcBar = useCallback(() => {
+    const idx = navItems.findIndex((n) => n.path === location.pathname);
+    const li  = liRefs.current[idx];
+    if (!li || !ulRef.current) return;
+    setBar({ left: li.offsetLeft, width: li.offsetWidth });
   }, [location.pathname]);
 
-  /* ================= Indicator ================= */
   useEffect(() => {
-    if (navRef.current[activeIndex]) {
-      setIndicatorStyle({
-        width: navRef.current[activeIndex].offsetWidth,
-        left: navRef.current[activeIndex].offsetLeft,
-      });
-    }
-  }, [activeIndex]);
+    const id = requestAnimationFrame(calcBar);
+    return () => cancelAnimationFrame(id);
+  }, [calcBar]);
 
-  /* ================= Dark Mode ================= */
+  useEffect(() => {
+    window.addEventListener("resize", calcBar);
+    return () => window.removeEventListener("resize", calcBar);
+  }, [calcBar]);
+
+  useEffect(() => {
+    let raf = null;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const t = window.scrollY;
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        setScrollPct(h > 0 ? (t / h) * 100 : 0);
+        setScrolled(t > 20);
+        raf = null;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => { setOpenNav(false); }, [location.pathname]);
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
+  useEffect(() => {
+    document.body.style.overflow = openNav ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [openNav]);
 
-    // Cart click handler
-  const handleCartClick = (e) => {
+  const toggleDark = useCallback(() => setDark((d) => !d), []);
+  const closeNav   = useCallback(() => setOpenNav(false), []);
+
+  const handleCartClick = useCallback((e) => {
     if (!isSignedIn) {
       e.preventDefault();
-      alert('🔒 Please sign up or sign in first to access your cart!');
+      toast.warning("🔒 Please sign in to access your cart!", { toastId: "cart-auth" });
     }
-  };
+  }, [isSignedIn]);
 
   return (
     <>
-      {/* ================= NAVBAR ================= */}
-      <header
-        className="fixed top-0 left-0 w-full z-50
-        bg-[#fff] dark:bg-[#000000] backdrop-blur-xl
-        shadow-md transition-colors"
-      >
-        <div className="max-w-6xl mx-auto h-[72px] px-4 flex items-center justify-between text-[#292524] dark:text-[#fafaf9]">
+      {/* ══════════ FIXED HEADER ══════════ */}
+      <header className={`fixed top-0 left-0 right-0 z-50 ${
+        scrolled
+          ? "bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-xl shadow-md"
+          : "bg-white dark:bg-[#0a0a0a] shadow-sm"
+      }`}>
+        <div className="max-w-7xl mx-auto h-[64px] px-4 sm:px-6 flex items-center justify-between gap-4">
+
           {/* Logo */}
-          <Link to="/" className="text-3xl font-extrabold tracking-wide text-[#155dfc]">
-            <span className="text-[#292524] dark:text-[#fafaf9] font-serif">
-              Nova
-            </span>
-            Shop
+          <Link to="/" onClick={closeNav}
+            className="shrink-0 text-[22px] font-extrabold text-[#155dfc] leading-none"
+          >
+            <span className="text-gray-900 dark:text-white font-serif">Nova</span>Shop
           </Link>
 
-          {/* ===== Desktop Menu ===== */}
-          <div className="relative hidden lg:flex">
-            <ul className="flex gap-8 text-lg font-medium">
-              {navItems.map((item, index) => (
-                <li
-                  key={item.name}
-                  ref={(el) => (navRef.current[index] = el)}
-                  onClick={() => setActiveIndex(index)}
-                  className="relative"
-                >
-                  <NavLink
-                    to={item.path}
-                    className="hover:text-[#155dfc] transition-colors"
+          {/* Desktop Nav */}
+          <nav className="hidden lg:block relative" style={{ paddingBottom: "12px" }}>
+            <ul ref={ulRef} className="flex gap-6 text-sm font-medium">
+              {navItems.map((item, idx) => (
+                <li key={item.name} ref={(el) => (liRefs.current[idx] = el)}>
+                  <NavLink to={item.path}
+                    className={({ isActive }) =>
+                      `block whitespace-nowrap hover:text-[#155dfc] transition-colors ${
+                        isActive ? "text-[#155dfc] font-semibold" : "text-gray-700 dark:text-gray-200"
+                      }`
+                    }
                   >
                     {item.name}
                   </NavLink>
                 </li>
               ))}
             </ul>
-
-            {/* Active underline */}
-            <motion.div
-              layout
-              className="absolute -bottom-2 h-[3px] rounded-full bg-[#155dfc]"
-              style={{
-                width: indicatorStyle.width,
-                left: indicatorStyle.left,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            <span className="absolute bottom-0 h-[3px] rounded-full bg-[#155dfc] pointer-events-none"
+              style={{ left: bar.left, width: bar.width, transition: "left 0.2s ease, width 0.2s ease" }}
             />
-          </div>
+          </nav>
 
-          {/* ===== Right Section ===== */}
-          <div className="flex items-center gap-4">
-            {/* Cart */}
-            <Link 
-              to="/cart" 
-              onClick={handleCartClick}
-              className="relative hidden lg:block"
+          {/* Right Controls */}
+          <div className="flex items-center gap-1.5">
+            <Link to="/wishlist"
+              className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             >
-              <IoCartOutline size={26} />
-              <span className="absolute -top-2 -right-2 bg-[#155dfc] text-white text-xs px-2 rounded-full">
-                {cartItem.length}
-              </span>
+              <IoHeartOutline size={20} />
             </Link>
 
-            {/* Theme */}
-            <button
-              onClick={() => setDark(!dark)}
-              className="p-2 rounded-full bg-[#155dfc] text-[#fff] transition-colors hidden lg:block"
+            <Link to="/cart" onClick={handleCartClick}
+              className="hidden lg:flex relative w-10 h-10 items-center justify-center rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              {dark ? <FiSun /> : <FiMoon />}
+              <IoCartOutline size={20} />
+              {cartItem.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#155dfc] text-white text-[10px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1">
+                  {cartItem.length > 99 ? "99+" : cartItem.length}
+                </span>
+              )}
+            </Link>
+
+            <button onClick={toggleDark}
+              className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl bg-[#155dfc]/10 hover:bg-[#155dfc] text-[#155dfc] hover:text-white transition-colors"
+            >
+              {dark ? <FiSun size={16} /> : <FiMoon size={16} />}
             </button>
 
-            {/* Auth Desktop */}
-            <div>
+            <div className="hidden lg:block ml-1">
               <SignedOut>
-                <SignInButton className="bg-[#155dfc] text-[#fff] px-4 py-1 rounded-md" />
+                <SignInButton mode="modal">
+                  <button className="bg-[#155dfc] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#1249d4] transition-colors">
+                    Sign In
+                  </button>
+                </SignInButton>
               </SignedOut>
               <SignedIn>
-                <UserButton />
+                <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "w-9 h-9" } }} />
               </SignedIn>
             </div>
 
-            {/* Mobile Toggle */}
-            <div className="lg:hidden dark:text-[#fff cursor-pointer">
-              {openNav ? (
-                <HiMenuAlt3 size={26} onClick={() => setOpenNav(false)} />
-              ) : (
-                <HiMenuAlt1 size={26} onClick={() => setOpenNav(true)} />
-              )}
-            </div>
+            {/* Mobile Hamburger — shows X when open */}
+            <button onClick={() => setOpenNav((v) => !v)}
+              aria-label="Toggle menu"
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              {openNav ? <HiX size={22} /> : <HiMenuAlt1 size={22} />}
+            </button>
           </div>
         </div>
 
-        {/* ===== Scroll Progress Bar (BOTTOM) ===== */}
-        <motion.div
-          style={{ scaleX }}
-          className="h-[3px] w-full origin-left bg-[#155dfc]"
-        />
+        {/* Scroll progress bar */}
+        <div className="h-[2px] bg-gray-100 dark:bg-gray-800">
+          <div className="h-full bg-[#155dfc]" style={{ width: `${scrollPct}%`, transition: "none" }} />
+        </div>
       </header>
 
       {/* Spacer */}
-      <div className="h-[75px]" />
+      <div className="h-[66px]" />
 
-      {/* ================= MOBILE SIDEBAR ================= */}
-    <AnimatePresence>
-      {openNav && (
-        <>
-          {/* Overlay */}
-          <motion.div
-            className="fixed inset-0 z-40 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpenNav(false)}
-          />
-    
-          {/* Sidebar */}
-          <motion.aside
-            initial={{ x: "100%", scale: 0.95 }}
-            animate={{ x: 0, scale: 1 }}
-            exit={{ x: "100%", scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 140, damping: 18 }}
-            className="fixed top-0 right-0 h-screen w-[88%] max-w-sm
-            bg-white/95 dark:bg-black/95 backdrop-blur-xl
-            z-50 shadow-2xl flex flex-col"
+      {/* ══════════ OVERLAY ══════════
+          z-[60]: above header (z-50) — covers the header completely.
+          This is WHY double logo was showing: header was peeking through
+      -->*/}
+      <div
+        onClick={closeNav}
+        aria-hidden="true"
+        className={`fixed inset-0 z-[60] bg-black/60 backdrop-blur-[2px] lg:hidden ${
+          openNav ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        style={{ transition: "opacity 0.25s" }}
+      />
+
+      {/* ══════════ MOBILE SIDEBAR ══════════
+          z-[70]: above overlay (z-60) AND header (z-50).
+          bg-white / dark:bg-[#0f0f0f] = SOLID, no transparency.
+          top-0 h-screen: covers full screen height including area behind header.
+      -->*/}
+      <aside
+        className="fixed top-0 right-0 h-screen z-[70] w-[78%] max-w-[300px] bg-white dark:bg-[#0f0f0f] flex flex-col shadow-2xl lg:hidden"
+        style={{
+          transform: openNav ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.28s cubic-bezier(0.4,0,0.2,1)",
+        }}
+      >
+        {/* Sidebar header */}
+        <div className="flex items-center justify-between px-5 h-[64px] border-b border-gray-100 dark:border-gray-800 shrink-0">
+          <Link to="/" onClick={closeNav}
+            className="text-xl font-extrabold text-[#155dfc] leading-none"
           >
-            {/* ===== HEADER ===== */}
-            <div className="flex items-center justify-between px-4 py-4 border-b border-black/10 dark:border-white/10">
-              <h2 className="text-[#155dfc] text-xl font-extrabold tracking-wide">
-                <span className="text-[#1f2937] dark:text-[#fafaf9]">Nova</span>
-                Shop
-              </h2>
-    
-              {/* Close Button */}
-              <motion.button
-                whileTap={{ scale: 0.9, rotate: 90 }}
-                onClick={() => setOpenNav(false)}
-                className="h-10 w-10 rounded-full
-                bg-[#155dfc] text-[#fafaf9]
-                flex items-center justify-center cursor-pointer"
-              >
-                <HiMenuAlt3 size={22} />
-              </motion.button>
-            </div>
-    
-            {/* ===== NAV LINKS ===== */}
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              variants={{
-                visible: {
-                  transition: { staggerChildren: 0.1 },
-                },
-              }}
-              className="flex-1 px-6 py-8 space-y-4"
-            >
-              {navItems.map((item) => (
-                <motion.li
-                  key={item.name}
-                  variants={{
-                    hidden: { opacity: 0, x: 30 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                >
-                  <NavLink
-                    to={item.path}
-                    onClick={() => setOpenNav(false)}
-                    className={({ isActive }) =>
-                      `block px-4 py-3 rounded-xl text-lg font-medium text-[#155dfc] transition-all
-                      ${
-                        isActive
-                          ? "bg-[#155dfc] text-[#fafaf9]"
-                          : "hover:bg-[#155dfc]/10"
-                      }`
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                </motion.li>
-              ))}
-              <hr className="text-[#155dfc] border-[1px] rounded" />
-              <Link 
-              to="/cart" 
-              onClick={handleCartClick}
-              className="relative"
-            >
-              <div className="w-full flex text-lg my-6">
-                <button
-                  className="w-[80%] border border-[#155dfc] text-[#155dfc] py-3 text-lg rounded-l-xl font-extrabold hover:bg-[#155dfc] hover:border-r-[#fff] dark:hover:border-r-[#000] hover:text-[#fff] transition duration-500">
-                  Open Cart
-                </button>
-                <span className="bg-[#155dfc] text-white py-2.5 text-xl rounded-r-xl font-extrabold w-[20%] text-center">{cartItem.length}</span> 
-              </div>
+            <span className="text-gray-900 dark:text-white font-serif">Nova</span>Shop
+          </Link>
+          <button onClick={closeNav} aria-label="Close menu"
+            className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-[#155dfc] hover:text-white transition-colors"
+          >
+            <HiX size={18} />
+          </button>
+        </div>
 
+        {/* Scrollable nav area */}
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+          {navItems.map((item) => (
+            <NavLink key={item.name} to={item.path} onClick={closeNav}
+              className={({ isActive }) =>
+                `flex items-center w-full px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-[#155dfc] text-white"
+                    : "text-gray-700 dark:text-gray-200 hover:bg-[#155dfc]/10 hover:text-[#155dfc]"
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
 
+          <div className="pt-3 mt-2 border-t border-gray-100 dark:border-gray-800 space-y-2">
+            {/* Cart */}
+            <Link to="/cart"
+              onClick={(e) => { handleCartClick(e); closeNav(); }}
+              className="flex items-center justify-between w-full px-4 py-3 rounded-xl border-2 border-[#155dfc] text-[#155dfc] font-semibold text-sm hover:bg-[#155dfc] hover:text-white transition-colors"
+            >
+              <span className="flex items-center gap-2"><IoCartOutline size={18} /> My Cart</span>
+              {cartItem.length > 0 && (
+                <span className="bg-[#155dfc] text-white text-xs font-black px-2 py-0.5 rounded-full">
+                  {cartItem.length}
+                </span>
+              )}
             </Link>
 
-              <button
-               onClick={() => setDark(!dark)}
-               className="rounded-full w-full border border-[#155dfc] bg-[#155dfc] text-white w-full py-3 rounded-xl text-lg font-medium hover:text-[#155dfc] hover:bg-[#fff] dark:hover:bg-[#000] transition duration-500"
-             >
-               {dark ? <span>Light Mode</span> : <span>Dark Mode</span>}
-             </button>
-            </motion.ul>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+            {/* Wishlist */}
+            <Link to="/wishlist" onClick={closeNav}
+              className="flex items-center gap-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 hover:border-red-300 transition-colors"
+            >
+              <IoHeartOutline size={16} /> My Wishlist
+            </Link>
+
+            {/* Theme */}
+            <button onClick={toggleDark}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              {dark ? <FiSun size={16} /> : <FiMoon size={16} />}
+              {dark ? "Light Mode" : "Dark Mode"}
+            </button>
+
+            {/* Auth */}
+            <div className="flex justify-center pt-1">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button onClick={closeNav}
+                    className="w-full bg-[#155dfc] text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-[#1249d4] transition-colors"
+                  >
+                    Sign In / Sign Up
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex flex-col items-center gap-1.5">
+                  <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "w-11 h-11" } }} />
+                  <span className="text-[11px] text-gray-400">Tap to manage account</span>
+                </div>
+              </SignedIn>
+            </div>
+          </div>
+        </nav>
+      </aside>
     </>
   );
 };
