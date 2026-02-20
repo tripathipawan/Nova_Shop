@@ -1,83 +1,82 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const DataContext = createContext(null);
 
 export const DataProvider = ({ children }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    // eslint-disable-next-line no-unused-vars
-    const validateImage = (url) => {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = url;
-            const timeout = setTimeout(() => resolve(false), 3000);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-            img.onload = () => {
-                clearTimeout(timeout);
-                resolve(true);
-            };
-            img.onerror = () => {
-                clearTimeout(timeout);
-                resolve(false);
-            };
-        });
-    };
+  // Use ref so fetchAllProducts NEVER recreates (stable reference)
+  const stateRef = useRef({ data, loading, hasFetched: false });
+  stateRef.current.data = data;
+  stateRef.current.loading = loading;
 
-    // FETCHING ALL PRODUCTS FROM DUMMYJSON
-    const fetchAllProducts = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            
-            // DummyJSON API call
-            const res = await axios.get("https://dummyjson.com/products?limit=0");
+  const fetchAllProducts = useCallback(async () => {
+    // Guard: already fetching or already fetched
+    if (stateRef.current.hasFetched) return;
+    if (stateRef.current.loading) return;
 
-            let productsData = res.data.products || [];
-            setData(productsData);
-            setLoading(false);
+    stateRef.current.hasFetched = true; // set immediately to prevent race conditions
 
-        } catch (error) {
-            setError(error.message);
-            setLoading(false);
-        }
-    };
+    try {
+      setLoading(true);
+      setError(null);
 
-    const getUniqueCategory = (data, property) => {
-        if (!data || data.length === 0) return ["All"];
-        
-        let newVal = data.map((curElem) => {
-            return curElem[property];
-        });
-        
-        // Remove undefined/null values
-        newVal = newVal.filter(item => item);
-        
-        newVal = ["All", ...new Set(newVal)];
-        return newVal;
-    };
+      const res = await axios.get(
+        "https://dummyjson.com/products?limit=0"
+      );
+      const productsData = res.data.products || [];
+      setData(productsData);
+    } catch (err) {
+      stateRef.current.hasFetched = false; // allow retry on error
+      setError(err.message);
+      console.error("Failed to fetch products:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []); // Empty deps — truly stable, never recreates
 
-    const categoryOnlyData = getUniqueCategory(data, "category");
-    const brandOnlyData = getUniqueCategory(data, "brand");
+  // Memoized derived data so components don't re-compute on every render
+  const categoryOnlyData = useMemo(() => {
+    if (!data.length) return ["All"];
+    return ["All", ...new Set(data.map((i) => i.category).filter(Boolean))];
+  }, [data]);
 
-    return (
-        <DataContext.Provider
-            value={{
-                data,
-                setData,
-                fetchAllProducts,
-                categoryOnlyData,
-                brandOnlyData,
-                loading,
-                error,
-            }}
-        >
-            {children}
-        </DataContext.Provider>
-    );
+  const brandOnlyData = useMemo(() => {
+    if (!data.length) return ["All"];
+    return ["All", ...new Set(data.map((i) => i.brand).filter(Boolean))];
+  }, [data]);
+
+  const contextValue = useMemo(
+    () => ({
+      data,
+      setData,
+      fetchAllProducts,
+      categoryOnlyData,
+      brandOnlyData,
+      loading,
+      error,
+    }),
+    [data, fetchAllProducts, categoryOnlyData, brandOnlyData, loading, error]
+  );
+
+  return (
+    <DataContext.Provider value={contextValue}>
+      {children}
+    </DataContext.Provider>
+  );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components, react-hooks/rules-of-hooks
+// eslint-disable-next-line react-refresh/only-export-components
 export const getData = () => useContext(DataContext);
