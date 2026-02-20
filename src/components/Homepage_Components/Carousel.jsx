@@ -115,5 +115,4 @@ const Carousel = memo(() => {
 });
 
 Carousel.displayName = 'Carousel';
-
 export default Carousel;
