@@ -1,104 +1,106 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect, memo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, memo, useCallback } from "react";
 import { getData } from "../../context/DataContext";
-import { HiChevronRight } from "react-icons/hi2";
 import { BiCategory } from "react-icons/bi";
 
 const Category = memo(() => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data, fetchAllProducts } = getData();
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSticky, setIsSticky] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  // Fetch data on mount
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        await fetchAllProducts();
-      } catch (error) {
-        console.error('Error loading products:', error);
-      }
-    };
-    
-    loadData();
+    fetchAllProducts();
   }, []);
 
-  // Extract categories from data
   useEffect(() => {
     if (data && data.length > 0) {
-      const uniqueCategories = [...new Set(data.map((i) => i.category))];
-      setCategories(uniqueCategories);
+      const unique = [...new Set(data.map((i) => i.category))].filter(Boolean);
+      setCategories(unique);
       setIsLoading(false);
     }
   }, [data]);
 
-  // Sticky scroll behavior
+  // Track active category from URL
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsSticky(scrollPosition > 100);
-    };
+    const match = location.pathname.match(/\/category\/(.+)/);
+    if (match) {
+      setActiveCategory(match[1]);
+    } else if (location.pathname === "/products") {
+      setActiveCategory("all");
+    } else {
+      setActiveCategory("");
+    }
+  }, [location.pathname]);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleCategoryClick = useCallback(
+    (cat) => {
+      setActiveCategory(cat);
+      navigate(`/category/${cat}`);
+    },
+    [navigate]
+  );
 
-  // Loading skeleton
   if (isLoading || categories.length === 0) {
     return (
-      <section className="sticky top-0 z-40 bg-white dark:bg-[#0a0a0a] border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="max-w-[1600px] mx-auto px-4 py-3">
-          <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+      <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-2.5">
+          <div className="flex gap-2 overflow-x-auto">
+            {Array.from({ length: 7 }).map((_, i) => (
               <div
                 key={i}
-                className="min-w-[140px] h-10 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"
+                className="min-w-[100px] h-8 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse flex-shrink-0"
               />
             ))}
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 
   return (
-    <section
-      className={`sticky top-0 z-40 bg-white dark:bg-[#161616] border-b border-gray-200 dark:border-gray-800 transition-all duration-300 ${
-        isSticky ? 'shadow-lg backdrop-blur-md bg-white/95 dark:bg-[#0a0a0a]/95' : 'shadow-sm'
-      }`}
-    >
-      <div className="max-w-[1600px] mx-auto px-4 py-3">
-        {/* Categories Horizontal Scroll */}
-        <div className="flex items-center gap-3 overflow-auto [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0">
-          
-          {/* All Categories Button */}
+    <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 py-2">
+        <div
+          className="flex items-center gap-2 overflow-x-auto"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {/* All button */}
           <button
-            onClick={() => navigate('/products')}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg bg-[#155dfc] text-white font-medium text-sm hover:shadow-lg hover:shadow-[#155dfc]/30 transition-all duration-300 hover:scale-105 active:scale-95"
+            onClick={() => { setActiveCategory("all"); navigate("/products"); }}
+            className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              activeCategory === "all"
+                ? "bg-[#155dfc] text-white shadow-sm"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-[#155dfc]/10 hover:text-[#155dfc]"
+            }`}
           >
             <BiCategory className="text-base" />
-            <span className="hidden sm:inline">All</span>
+            All
           </button>
 
-          {/* Category Pills */}
-          {categories.map((cat, index) => (
+          {/* Category pills */}
+          {categories.map((cat) => (
             <button
-              key={index}
-              onClick={() => navigate(`/category/${cat}`)}
-              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-[#155dfc] text-gray-700 dark:text-gray-200 hover:text-white font-medium text-sm capitalize border border-transparent hover:border-[#155dfc] transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-md group"
+              key={cat}
+              onClick={() => handleCategoryClick(cat)}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium capitalize transition-all duration-200 whitespace-nowrap ${
+                activeCategory === cat
+                  ? "bg-[#155dfc] text-white shadow-sm"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-[#155dfc]/10 hover:text-[#155dfc]"
+              }`}
             >
-              <span>{cat}</span>
-              <HiChevronRight className="text-xs transition-opacity opacity-0 group-hover:opacity-100" />
+              {cat.replace(/-/g, " ")}
             </button>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 });
 
-Category.displayName = 'Category';
+Category.displayName = "Category";
 
 export default Category;
