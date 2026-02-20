@@ -22,7 +22,7 @@ const Footer = () => {
   }
 
   const socialIcons = [
-    { Icon: FaFacebook, name: 'Facebook', link: '#' },
+    { Icon: FaFacebook, name: 'Facebook', link: '#' }, 
     { Icon: FaInstagram, name: 'Instagram', link: '#' },
     { Icon: FaTwitterSquare, name: 'Twitter', link: '#' },
     { Icon: FaPinterest, name: 'Pinterest', link: '#' }
