@@ -42,7 +42,7 @@ const MobileFilter = ({
 
       {/* ── Drawer ── */}
       <aside
-        className="lg:hidden fixed top-0 left-0 h-[95vh] w-[85%] max-w-[320px] z-[70] bg-white dark:bg-[#0f0f0f] flex flex-col shadow-2xl"
+        className="lg:hidden fixed top-0 left-0 h-[92vh] w-[85%] max-w-[320px] z-[70] bg-white dark:bg-[#0f0f0f] flex flex-col shadow-2xl"
         style={{ transform: openFilter ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.28s cubic-bezier(0.4,0,0.2,1)" }}
       >
         {/* Drawer Header */}
