@@ -44,6 +44,8 @@
 - ✅ **Product Details** - Comprehensive product information with images
 - ✅ **Category Pages** - Dedicated pages for each product category
 - ✅ **Real-time Notifications** - Toast messages for user actions
+- ✅ **Not Found** - 404 Page Not Found
+- ✅ **Wishlist** - Add Your Wishlist Products
 
 ### 🔐 **Authentication & Security**
 - ✅ **Clerk Integration** - Secure authentication and user management
@@ -140,6 +142,8 @@ Nova_Shop/
 │   │   ├── Cart.jsx
 │   │   ├── About.jsx
 │   │   ├── Contact.jsx
+│   │   ├── NotFound.jsx
+│   │   ├── Wishlist.jsx
 │   │   └── PolicyHub.jsx
 │   ├── App.jsx            # Main app component
 │   ├── main.jsx           # Entry point
