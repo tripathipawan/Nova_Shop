@@ -4,7 +4,7 @@
 
 **A cutting-edge, fully responsive e-commerce platform built with modern web technologies**
 
-[🌐 Live Demo](https://nova-shop8705.vercel.app/)
+[🌐 Live Demo](https://knovashop.vercel.app/)
 
 </div>
 
