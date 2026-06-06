@@ -1,5 +1,3 @@
-
-
 import { useUser, SignInButton } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";

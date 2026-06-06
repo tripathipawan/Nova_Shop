@@ -8,12 +8,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] flex items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center max-w-lg"
-      >
+      <div className="text-center max-w-lg">
         {/* Animated 404 number */}
         <div className="relative mb-8 select-none">
           <span
@@ -60,7 +55,7 @@ const NotFound = () => {
             />
           ))}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

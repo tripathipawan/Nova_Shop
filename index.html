@@ -1,13 +1,127 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/Favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nova Shop</title>
-  </head>
-  <body>
-    <div id="root" class="bg-[#fff] dark:bg-[#222222]"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ─── Primary SEO ─────────────────────────────────────────────────── -->
+  <title>NovaShop – Premium Online Shopping | Best Deals in India</title>
+  <meta name="description"
+    content="Shop premium electronics, fashion, home essentials and more on NovaShop. Lightning-fast delivery across India, secure payments, easy returns. 50K+ happy customers." />
+  <meta name="keywords"
+    content="online shopping India, buy electronics online, fashion store, NovaShop, best deals, fast delivery" />
+  <meta name="author" content="NovaShop" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://knovashop.vercel.app/" />
+
+  <!-- ─── Open Graph (Facebook / LinkedIn / WhatsApp) ─────────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://knovashop.vercel.app/" />
+  <meta property="og:title" content="NovaShop – Premium Online Shopping | Best Deals in India" />
+  <meta property="og:description"
+    content="Shop premium products with fast delivery across India. Electronics, fashion, home & more — 50K+ happy customers." />
+  <meta property="og:image" content="https://knovashop.vercel.app/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="NovaShop" />
+
+  <!-- ─── Twitter Card ────────────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://knovashop.vercel.app/" />
+  <meta name="twitter:title" content="NovaShop – Premium Online Shopping" />
+  <meta name="twitter:description" content="Lightning-fast delivery, secure payments, 50K+ happy customers." />
+  <meta name="twitter:image" content="https://knovashop.vercel.app/og-image.jpg" />
+
+  <!-- ─── Favicon ─────────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" href="/src/assets/Favicon.png" />
+  <link rel="apple-touch-icon" href="/src/assets/Favicon.png" />
+
+  <!-- ─── GEO / Structured Data – Organization ────────────────────────── -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "NovaShop",
+      "url": "https://knovashop.vercel.app",
+      "logo": "https://knovashop.vercel.app/src/assets/Favicon.png",
+      "description": "Premium online shopping store with fast delivery across India. Electronics, fashion, home & more.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Khatima",
+        "addressLocality": "Khatima",
+        "addressRegion": "Uttarakhand",
+        "postalCode": "262308",
+        "addressCountry": "IN"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "support@novashop.com",
+        "availableLanguage": ["English", "Hindi"]
+      },
+      "sameAs": [
+        "https://facebook.com/novashop",
+        "https://instagram.com/novashop",
+        "https://twitter.com/novashop"
+      ]
+    }
+    </script>
+
+  <!-- ─── GEO / Structured Data – WebSite + SearchAction ──────────────── -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "NovaShop",
+      "url": "https://knovashop.vercel.app",
+      "description": "Premium online shopping with fast delivery across India",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://knovashop.vercel.app/products?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+  <!-- ─── GEO / Structured Data – OnlineStore ─────────────────────────── -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "NovaShop",
+      "url": "https://knovashop.vercel.app",
+      "image": "https://knovashop.vercel.app/og-image.jpg",
+      "description": "Premium online store offering electronics, fashion, and home products with lightning-fast delivery across India.",
+      "priceRange": "$$",
+      "currenciesAccepted": "INR, USD",
+      "paymentAccepted": "Credit Card, Debit Card, UPI, Net Banking",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "NovaShop Products",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Electronics" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Fashion" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Home & Living" } }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "50000",
+        "bestRating": "5"
+      }
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root" class="bg-[#fff] dark:bg-[#222222]"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

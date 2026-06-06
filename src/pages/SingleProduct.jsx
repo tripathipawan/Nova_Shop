@@ -1,4 +1,5 @@
 import axios from "axios";
+import useSEO from "../hooks/useSEO";
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "../assets/Loading4.webm";
@@ -17,6 +18,32 @@ const SingleProduct = () => {
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
+
+  useSEO({
+    title: product ? `${product.title} — NovaShop` : "Product — NovaShop",
+    description: product ? `Buy ${product.title} at \\$${product.price}. ${product.description?.slice(0, 100) || ""}` : "Shop premium products at NovaShop.",
+    schema: product ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.title,
+      image: product.thumbnail,
+      description: product.description,
+      brand: { "@type": "Brand", name: product.brand || "NovaShop" },
+      offers: {
+        "@type": "Offer",
+        price: product.price,
+        priceCurrency: "USD",
+        availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        url: `https://knovashop.vercel.app/products/${product.id}`,
+      },
+      aggregateRating: product.rating ? {
+        "@type": "AggregateRating",
+        ratingValue: product.rating,
+        bestRating: 5,
+        reviewCount: product.reviews?.length || 1,
+      } : undefined,
+    } : undefined,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -478,4 +505,3 @@ const SingleProduct = () => {
 };
 
 export default SingleProduct;
-

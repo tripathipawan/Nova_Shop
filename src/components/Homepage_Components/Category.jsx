@@ -46,7 +46,7 @@ const Category = memo(() => {
 
   if (isLoading || categories.length === 0) {
     return (
-      <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800">
+      <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800" style={{ minHeight: "48px" }}>
         <div className="max-w-7xl mx-auto px-4 py-2.5">
           <div className="flex gap-2 overflow-x-auto">
             {Array.from({ length: 7 }).map((_, i) => (
@@ -62,7 +62,7 @@ const Category = memo(() => {
   }
 
   return (
-    <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800 shadow-sm">
+    <div className="sticky z-40 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-gray-800 shadow-sm" style={{ minHeight: "48px" }}>
       <div className="max-w-7xl mx-auto px-4 py-2">
         <div
           className="flex items-center gap-2 overflow-x-auto"

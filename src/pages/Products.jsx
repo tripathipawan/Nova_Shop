@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import useSEO from "../hooks/useSEO";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { getData } from "../context/DataContext";
 import ProductCard from "../components/ProductCard";
@@ -14,6 +15,10 @@ import { FiChevronDown } from "react-icons/fi";
 const ITEMS_PER_PAGE = 12;
 
 const Products = () => {
+  useSEO({
+    title: "All Products — NovaShop | Electronics, Fashion & More",
+    description: "Browse 10,000+ premium products on NovaShop. Filter by category, brand and price. Fast delivery across India.",
+  });
   const { data, fetchAllProducts, loading } = getData();
 
   const [search, setSearch]         = useState("");
@@ -78,7 +83,6 @@ const Products = () => {
   const totalPages    = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const paginatedData = filteredData.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
-  // Shared filter props — passed to both desktop FilterSection and mobile MobileFilter
   const filterProps = {
     search, setSearch,
     category, setCategory, handleCategoryChange,
@@ -107,7 +111,6 @@ const Products = () => {
 
         {/* ── Toolbar ── */}
         <div className="flex items-center gap-3 mt-4 mb-4 flex-wrap">
-          {/* Mobile filter trigger — rendered inside MobileFilter component */}
           <MobileFilter
             openFilter={openFilter}
             setOpenFilter={setOpenFilter}
@@ -151,10 +154,6 @@ const Products = () => {
           <div className="flex gap-6">
 
             {/* ── DESKTOP SIDEBAR ─────────────────────────────────────── */}
-            {/*
-              w-56 / xl:w-60 = fixed width sidebar
-              FilterSection handles its own sticky + scroll internally
-            */}
             <div className="hidden lg:block shrink-0 w-56 xl:w-60">
               <FilterSection {...filterProps} />
             </div>

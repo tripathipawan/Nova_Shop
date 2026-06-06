@@ -225,24 +225,3 @@ const CategoryProduct = () => {
 };
 
 export default CategoryProduct;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

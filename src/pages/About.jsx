@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import useSEO from "../hooks/useSEO";
 
 const stats = [
   { value: "10K+",  label: "Products" },
@@ -14,6 +15,10 @@ const whyUs = [
 ];
 
 const About = () => {
+  useSEO({
+    title: "About NovaShop — Our Story, Mission & Team",
+    description: "Learn about NovaShop — India's premium online shopping destination with 10K+ products, 50K+ happy customers and 4.9 star ratings.",
+  });
   return (
     // Single CSS fadeIn — no library, zero lag
     <div

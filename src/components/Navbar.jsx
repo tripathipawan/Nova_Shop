@@ -1,8 +1,3 @@
-
-
-
-
-
 /* eslint-disable react-hooks/set-state-in-effect */
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -94,6 +89,14 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Skip to main content — accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-[#155dfc] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold"
+      >
+        Skip to main content
+      </a>
+
       {/* ══════════ FIXED HEADER ══════════ */}
       <header className={`fixed top-0 left-0 right-0 z-50 ${
         scrolled
@@ -188,10 +191,6 @@ const Navbar = () => {
       {/* Spacer */}
       <div className="h-[66px]" />
 
-      {/* ══════════ OVERLAY ══════════
-          z-[60]: above header (z-50) — covers the header completely.
-          This is WHY double logo was showing: header was peeking through
-      -->*/}
       <div
         onClick={closeNav}
         aria-hidden="true"
@@ -201,11 +200,6 @@ const Navbar = () => {
         style={{ transition: "opacity 0.25s" }}
       />
 
-      {/* ══════════ MOBILE SIDEBAR ══════════
-          z-[70]: above overlay (z-60) AND header (z-50).
-          bg-white / dark:bg-[#0f0f0f] = SOLID, no transparency.
-          top-0 h-screen: covers full screen height including area behind header.
-      -->*/}
       <aside
         className="fixed top-0 right-0 h-screen z-[70] w-[78%] max-w-[300px] bg-white dark:bg-[#0f0f0f] flex flex-col shadow-2xl lg:hidden"
         style={{

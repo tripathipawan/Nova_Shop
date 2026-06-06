@@ -1,10 +1,15 @@
 import { useState } from "react";
+import useSEO from "../hooks/useSEO";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
 
 const Contact = () => {
+  useSEO({
+    title: "Contact NovaShop — Customer Support & Help",
+    description: "Get in touch with NovaShop support. We are available 24/7 for order tracking, returns, shipping queries and more.",
+  });
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
