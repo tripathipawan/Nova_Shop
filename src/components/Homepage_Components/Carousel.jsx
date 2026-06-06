@@ -25,7 +25,7 @@ const Carousel = memo(() => {
               New Collection 2026 🚀
             </span>
 
-            {/* h1 — main page heading, correct hierarchy */}
+            {/* h1 — main page heading */}
             <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
               Elevate Your <br />
               <span className="bg-gradient-to-r from-[#155dfc] to-[#4f87ff] bg-clip-text text-transparent">
@@ -33,7 +33,7 @@ const Carousel = memo(() => {
               </span>
             </h1>
 
-            <p className="max-w-lg text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
+            <p className="hero-description max-w-lg text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
               Premium products, smooth checkout, lightning fast delivery.
               Designed for modern shoppers who value quality and speed.
             </p>
@@ -60,12 +60,15 @@ const Carousel = memo(() => {
             {/* Stats */}
             <div className="flex flex-wrap gap-8 mt-10" aria-label="Store statistics">
               {[
-                { label: "Products", value: "10K+" },
+                { label: "Products",  value: "10K+" },
                 { label: "Customers", value: "50K+" },
                 { label: "Rating",    value: "4.9⭐" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-[#155dfc]" aria-label={`${stat.value} ${stat.label}`}>
+                  <div
+                    className="text-2xl md:text-3xl font-bold text-[#155dfc]"
+                    aria-label={`${stat.value} ${stat.label}`}
+                  >
                     {stat.value}
                   </div>
                   <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
@@ -77,11 +80,16 @@ const Carousel = memo(() => {
           {/* RIGHT VISUAL */}
           <div className="relative order-1 lg:order-2">
             <div className="relative group">
-              <div className="absolute -inset-5 bg-gradient-to-tr from-[#155dfc] via-pink-500 to-orange-400 rounded-3xl blur-2xl opacity-60" aria-hidden="true" />
+              <div
+                className="absolute -inset-5 bg-gradient-to-tr from-[#155dfc] via-pink-500 to-orange-400 rounded-3xl blur-2xl opacity-60"
+                aria-hidden="true"
+              />
 
               {/* Fixed dimensions → eliminates CLS */}
-              <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 dark:border-white/10 transition-transform duration-300 hover:scale-[1.02]"
-                style={{ aspectRatio: "4/3" }}>
+              <div
+                className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 dark:border-white/10 transition-transform duration-300 hover:scale-[1.02]"
+                style={{ aspectRatio: "4/3" }}
+              >
                 <img
                   src={Banner1}
                   alt="NovaShop — Premium products with fast delivery across India"
@@ -92,7 +100,10 @@ const Carousel = memo(() => {
                   decoding="async"
                   className="object-cover object-center w-full h-full"
                 />
-                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-t from-black/20 via-transparent to-transparent group-hover:opacity-100" aria-hidden="true" />
+                <div
+                  className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-t from-black/20 via-transparent to-transparent group-hover:opacity-100"
+                  aria-hidden="true"
+                />
               </div>
 
               {/* Floating badge — Fast Delivery */}
@@ -102,7 +113,10 @@ const Carousel = memo(() => {
               </div>
 
               {/* Floating badge — Top Rated */}
-              <div className="absolute px-5 py-3 shadow-2xl top-2 right-2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl hover:scale-105 transition-transform duration-200" aria-label="Rated 4.9 out of 5">
+              <div
+                className="absolute px-5 py-3 shadow-2xl top-2 right-2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl hover:scale-105 transition-transform duration-200"
+                aria-label="Rated 4.9 out of 5"
+              >
                 <div className="flex items-center gap-2">
                   <FiStar className="text-white" size={20} aria-hidden="true" />
                   <span className="text-lg font-bold text-white">4.9</span>

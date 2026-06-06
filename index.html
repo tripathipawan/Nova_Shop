@@ -15,6 +15,15 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://knovashop.vercel.app/" />
 
+  <!-- ─── PERFORMANCE: Preconnect to external origins ─────────────────── -->
+  <link rel="preconnect" href="https://dummyjson.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="https://dummyjson.com" />
+
+  <!-- ─── PERFORMANCE: Preload LCP hero image ──────────────────────────── -->
+  <!-- Banner1.jpg is the above-the-fold hero — preloading it removes LCP delay -->
+  <link rel="preload" as="image" href="/src/assets/Banner1.jpg" fetchpriority="high" />
+
   <!-- ─── Open Graph (Facebook / LinkedIn / WhatsApp) ─────────────────── -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://knovashop.vercel.app/" />
@@ -37,6 +46,9 @@
   <!-- ─── Favicon ─────────────────────────────────────────────────────── -->
   <link rel="icon" type="image/png" href="/src/assets/Favicon.png" />
   <link rel="apple-touch-icon" href="/src/assets/Favicon.png" />
+
+  <!-- ─── Theme color (PWA / mobile browser chrome) ───────────────────── -->
+  <meta name="theme-color" content="#155dfc" />
 
   <!-- ─── GEO / Structured Data – Organization ────────────────────────── -->
   <script type="application/ld+json">

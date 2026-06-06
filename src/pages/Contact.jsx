@@ -1,7 +1,5 @@
 import { useState } from "react";
 import useSEO from "../hooks/useSEO";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
 
@@ -10,8 +8,9 @@ const Contact = () => {
     title: "Contact NovaShop — Customer Support & Help",
     description: "Get in touch with NovaShop support. We are available 24/7 for order tracking, returns, shipping queries and more.",
   });
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [errors, setErrors] = useState({});
+
+  const [form, setForm]       = useState({ name: "", email: "", subject: "", message: "" });
+  const [errors, setErrors]   = useState({});
   const [sending, setSending] = useState(false);
 
   const validate = () => {
@@ -34,7 +33,6 @@ const Contact = () => {
     e.preventDefault();
     if (!validate()) return;
     setSending(true);
-    // Simulate API call
     await new Promise((r) => setTimeout(r, 1500));
     setSending(false);
     toast.success("Message sent successfully! We'll get back to you soon. 🚀");
@@ -50,8 +48,8 @@ const Contact = () => {
     {
       icon: FaEnvelope,
       label: "Email",
-      value: "NovaShop@support.com",
-      href: "mailto:NovaShop@support.com",
+      value: "support@novashop.com",
+      href: "mailto:support@novashop.com",
     },
     {
       icon: FaPhone,
@@ -71,39 +69,41 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f0f4ff] to-[#e8edf8] dark:from-[#0a0f1a] dark:to-[#111827] flex items-center justify-center px-4 py-14">
       <div className="w-full max-w-5xl">
+
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-3">
             Get in{" "}
             <span className="text-[#155dfc]">Touch</span>
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-base max-w-md mx-auto">
-            Have a question or feedback? We'd love to hear from you.
+          <p className="text-gray-600 dark:text-gray-400 text-base max-w-md mx-auto">
+            Have a question or feedback? We&apos;d love to hear from you.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+
           {/* Contact Info */}
-          <div className="md:col-span-2 space-y-4">
+          <aside className="md:col-span-2 space-y-4" aria-label="Contact information">
             <div className="bg-[#155dfc] rounded-2xl p-6 text-white">
-              <h3 className="text-xl font-bold mb-2">NovaShop</h3>
-              <p className="text-white/80 text-sm leading-relaxed">
-                We're here to help you with any questions about our products and services.
+              <h2 className="text-xl font-bold mb-2">NovaShop</h2>
+              <p className="text-white/90 text-sm leading-relaxed">
+                We&apos;re here to help you with any questions about our products and services.
               </p>
             </div>
 
-            {contactInfo.map((item, i) => {
+            {contactInfo.map((item) => {
               const Icon = item.icon;
               return (
                 <div
-                  key={i}
+                  key={item.label}
                   className="bg-white dark:bg-[#111827] rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-start gap-4"
                 >
                   <div className="w-10 h-10 rounded-xl bg-[#155dfc]/10 flex items-center justify-center flex-shrink-0">
-                    <Icon className="text-[#155dfc] text-lg" />
+                    <Icon className="text-[#155dfc] text-lg" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
                       {item.label}
                     </p>
                     {item.href ? (
@@ -125,7 +125,7 @@ const Contact = () => {
 
             {/* Response time badge */}
             <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-200 dark:border-green-800/50 flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+              <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" aria-hidden="true" />
               <div>
                 <p className="text-sm font-semibold text-green-700 dark:text-green-400">
                   Typically replies within
@@ -135,54 +135,65 @@ const Contact = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </aside>
 
           {/* Form */}
           <div className="md:col-span-3 bg-white dark:bg-[#111827] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 sm:p-8">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
               Send us a message
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate aria-label="Contact form">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">
+                  <label htmlFor="contact-name" className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
                     Your Name *
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     placeholder="Pawan Tripathi"
                     value={form.name}
                     onChange={handleChange}
+                    autoComplete="name"
                     className={inputClass("name")}
+                    aria-required="true"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "name-error" : undefined}
                   />
                   {errors.name && (
-                    <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                    <p id="name-error" className="text-xs text-red-500 mt-1" role="alert">{errors.name}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">
+                  <label htmlFor="contact-email" className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
                     Email Address *
                   </label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     placeholder="you@example.com"
                     value={form.email}
                     onChange={handleChange}
+                    autoComplete="email"
                     className={inputClass("email")}
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                   />
                   {errors.email && (
-                    <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                    <p id="email-error" className="text-xs text-red-500 mt-1" role="alert">{errors.email}</p>
                   )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">
+                <label htmlFor="contact-subject" className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
                   Subject
                 </label>
                 <input
+                  id="contact-subject"
                   type="text"
                   name="subject"
                   placeholder="How can we help?"
@@ -193,19 +204,23 @@ const Contact = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">
+                <label htmlFor="contact-message" className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
                   Message *
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   rows={5}
                   placeholder="Tell us what's on your mind..."
                   value={form.message}
                   onChange={handleChange}
                   className={`${inputClass("message")} resize-none`}
+                  aria-required="true"
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? "message-error" : undefined}
                 />
                 {errors.message && (
-                  <p className="text-xs text-red-500 mt-1">{errors.message}</p>
+                  <p id="message-error" className="text-xs text-red-500 mt-1" role="alert">{errors.message}</p>
                 )}
               </div>
 
@@ -216,8 +231,8 @@ const Contact = () => {
               >
                 {sending ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                    Sending...
+                    <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                    <span>Sending...</span>
                   </>
                 ) : (
                   "Send Message 🚀"
