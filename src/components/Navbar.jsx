@@ -108,12 +108,13 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" onClick={closeNav}
             className="shrink-0 text-[22px] font-extrabold text-[#155dfc] leading-none"
+            aria-label="NovaShop home"
           >
             <span className="text-gray-900 dark:text-white font-serif">Nova</span>Shop
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:block relative" style={{ paddingBottom: "12px" }}>
+          <nav className="hidden lg:block relative" style={{ paddingBottom: "12px" }} aria-label="Main navigation">
             <ul ref={ulRef} className="flex gap-6 text-sm font-medium">
               {navItems.map((item, idx) => (
                 <li key={item.name} ref={(el) => (liRefs.current[idx] = el)}>
@@ -136,27 +137,33 @@ const Navbar = () => {
 
           {/* Right Controls */}
           <div className="flex items-center gap-1.5">
+            {/* ✅ FIX: aria-label added to wishlist link */}
             <Link to="/wishlist"
+              aria-label="Go to wishlist"
               className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             >
-              <IoHeartOutline size={20} />
+              <IoHeartOutline size={20} aria-hidden="true" />
             </Link>
 
+            {/* ✅ FIX: aria-label added to cart link */}
             <Link to="/cart" onClick={handleCartClick}
+              aria-label={`Cart${cartItem.length > 0 ? `, ${cartItem.length} items` : ""}`}
               className="hidden lg:flex relative w-10 h-10 items-center justify-center rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              <IoCartOutline size={20} />
+              <IoCartOutline size={20} aria-hidden="true" />
               {cartItem.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-[#155dfc] text-white text-[10px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1">
+                <span className="absolute -top-0.5 -right-0.5 bg-[#155dfc] text-white text-[10px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1" aria-hidden="true">
                   {cartItem.length > 99 ? "99+" : cartItem.length}
                 </span>
               )}
             </Link>
 
+            {/* ✅ FIX: aria-label added to dark mode toggle button */}
             <button onClick={toggleDark}
+              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl bg-[#155dfc]/10 hover:bg-[#155dfc] text-[#155dfc] hover:text-white transition-colors"
             >
-              {dark ? <FiSun size={16} /> : <FiMoon size={16} />}
+              {dark ? <FiSun size={16} aria-hidden="true" /> : <FiMoon size={16} aria-hidden="true" />}
             </button>
 
             <div className="hidden lg:block ml-1">
@@ -172,25 +179,28 @@ const Navbar = () => {
               </SignedIn>
             </div>
 
-            {/* Mobile Hamburger — shows X when open */}
+            {/* Mobile Hamburger */}
             <button onClick={() => setOpenNav((v) => !v)}
-              aria-label="Toggle menu"
+              aria-label={openNav ? "Close menu" : "Open menu"}
+              aria-expanded={openNav}
+              aria-controls="mobile-nav"
               className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              {openNav ? <HiX size={22} /> : <HiMenuAlt1 size={22} />}
+              {openNav ? <HiX size={22} aria-hidden="true" /> : <HiMenuAlt1 size={22} aria-hidden="true" />}
             </button>
           </div>
         </div>
 
         {/* Scroll progress bar */}
-        <div className="h-[2px] bg-gray-100 dark:bg-gray-800">
+        <div className="h-[2px] bg-gray-100 dark:bg-gray-800" aria-hidden="true">
           <div className="h-full bg-[#155dfc]" style={{ width: `${scrollPct}%`, transition: "none" }} />
         </div>
       </header>
 
       {/* Spacer */}
-      <div className="h-[66px]" />
+      <div className="h-[66px]" aria-hidden="true" />
 
+      {/* Overlay */}
       <div
         onClick={closeNav}
         aria-hidden="true"
@@ -200,7 +210,11 @@ const Navbar = () => {
         style={{ transition: "opacity 0.25s" }}
       />
 
+      {/* Mobile Sidebar */}
       <aside
+        id="mobile-nav"
+        aria-label="Mobile navigation"
+        aria-hidden={!openNav}
         className="fixed top-0 right-0 h-screen z-[70] w-[78%] max-w-[300px] bg-white dark:bg-[#0f0f0f] flex flex-col shadow-2xl lg:hidden"
         style={{
           transform: openNav ? "translateX(0)" : "translateX(100%)",
@@ -211,18 +225,19 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-5 h-[64px] border-b border-gray-100 dark:border-gray-800 shrink-0">
           <Link to="/" onClick={closeNav}
             className="text-xl font-extrabold text-[#155dfc] leading-none"
+            aria-label="NovaShop home"
           >
             <span className="text-gray-900 dark:text-white font-serif">Nova</span>Shop
           </Link>
-          <button onClick={closeNav} aria-label="Close menu"
+          <button onClick={closeNav} aria-label="Close navigation menu"
             className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-[#155dfc] hover:text-white transition-colors"
           >
-            <HiX size={18} />
+            <HiX size={18} aria-hidden="true" />
           </button>
         </div>
 
         {/* Scrollable nav area */}
-        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1" aria-label="Mobile menu">
           {navItems.map((item) => (
             <NavLink key={item.name} to={item.path} onClick={closeNav}
               className={({ isActive }) =>
@@ -241,11 +256,14 @@ const Navbar = () => {
             {/* Cart */}
             <Link to="/cart"
               onClick={(e) => { handleCartClick(e); closeNav(); }}
+              aria-label={`My Cart${cartItem.length > 0 ? `, ${cartItem.length} items` : ""}`}
               className="flex items-center justify-between w-full px-4 py-3 rounded-xl border-2 border-[#155dfc] text-[#155dfc] font-semibold text-sm hover:bg-[#155dfc] hover:text-white transition-colors"
             >
-              <span className="flex items-center gap-2"><IoCartOutline size={18} /> My Cart</span>
+              <span className="flex items-center gap-2">
+                <IoCartOutline size={18} aria-hidden="true" /> My Cart
+              </span>
               {cartItem.length > 0 && (
-                <span className="bg-[#155dfc] text-white text-xs font-black px-2 py-0.5 rounded-full">
+                <span className="bg-[#155dfc] text-white text-xs font-black px-2 py-0.5 rounded-full" aria-hidden="true">
                   {cartItem.length}
                 </span>
               )}
@@ -255,14 +273,15 @@ const Navbar = () => {
             <Link to="/wishlist" onClick={closeNav}
               className="flex items-center gap-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 hover:border-red-300 transition-colors"
             >
-              <IoHeartOutline size={16} /> My Wishlist
+              <IoHeartOutline size={16} aria-hidden="true" /> My Wishlist
             </Link>
 
-            {/* Theme */}
+            {/* ✅ FIX: Dark mode toggle in sidebar — aria-label added */}
             <button onClick={toggleDark}
+              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              {dark ? <FiSun size={16} /> : <FiMoon size={16} />}
+              {dark ? <FiSun size={16} aria-hidden="true" /> : <FiMoon size={16} aria-hidden="true" />}
               {dark ? "Light Mode" : "Dark Mode"}
             </button>
 
@@ -280,7 +299,7 @@ const Navbar = () => {
               <SignedIn>
                 <div className="flex flex-col items-center gap-1.5">
                   <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "w-11 h-11" } }} />
-                  <span className="text-[11px] text-gray-400">Tap to manage account</span>
+                  <span className="text-[11px] text-gray-500 dark:text-gray-400">Tap to manage account</span>
                 </div>
               </SignedIn>
             </div>

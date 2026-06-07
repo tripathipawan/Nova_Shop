@@ -73,36 +73,46 @@ const Reviews = memo(() => {
           What Our <span className="text-[#155dfc]">Customers Say</span>
         </h2>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list" aria-label="Customer reviews">
+        {/* ✅ FIX: Removed role="list" + role="listitem" on <article> — conflicting/prohibited ARIA.
+            Using <ul>/<li> which are natively list elements instead. */}
+        <ul
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          aria-label="Customer reviews"
+        >
           {reviews.map((item) => (
-            <article
-              key={item.name}
-              role="listitem"
-              className="p-6 transition-all duration-300 bg-white border dark:bg-black border-black/10 dark:border-white/25 rounded-2xl hover:shadow-lg hover:-translate-y-1"
-            >
-              {/* Stars */}
-              <div className="flex mb-3" aria-label={`${item.rating} out of 5 stars`}>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className={`text-sm ${i < item.rating ? "text-[#fcb715]" : "text-gray-300"}`} aria-hidden="true">
-                    ★
-                  </span>
-                ))}
-              </div>
+            <li key={item.name}>
+              <article className="p-6 h-full transition-all duration-300 bg-white border dark:bg-black border-black/10 dark:border-white/25 rounded-2xl hover:shadow-lg hover:-translate-y-1">
 
-              {/* Review text */}
-              <p className="mb-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                &ldquo;{item.review}&rdquo;
-              </p>
+                {/* Stars */}
+                <div
+                  className="flex mb-3"
+                  aria-label={`${item.rating} out of 5 stars`}
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span
+                      key={i}
+                      className={`text-sm ${i < item.rating ? "text-[#fcb715]" : "text-gray-300"}`}
+                      aria-hidden="true"
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
 
-              {/* User — h4 inside article is fine for hierarchy */}
-              <div>
-                <h4 className="font-semibold text-[#155dfc] text-sm">{item.name}</h4>
-                {/* Contrast fix: was #155efc9a (low opacity), now solid gray */}
-                <span className="text-xs text-gray-500 dark:text-gray-400">{item.role}</span>
-              </div>
-            </article>
+                {/* Review text */}
+                <p className="mb-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                  &ldquo;{item.review}&rdquo;
+                </p>
+
+                {/* Reviewer */}
+                <div>
+                  <h3 className="font-semibold text-[#155dfc] text-sm">{item.name}</h3>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">{item.role}</span>
+                </div>
+              </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

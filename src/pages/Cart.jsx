@@ -10,7 +10,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import emptyCart from "../assets/empty-cart.png";
+import emptyCart from "../assets/empty-cart.webp";
 
 const Cart = () => {
   const { cartItem = [], updateQuantity, deleteItem } = useCart();
@@ -161,9 +161,9 @@ const Cart = () => {
           <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <IoCheckmarkCircle className="text-5xl text-green-500" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
             Order Placed! 🎉
-          </h2>
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-2">
             Thank you, {user?.firstName || "Customer"}!
           </p>
@@ -182,12 +182,15 @@ const Cart = () => {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-[#0f0f0f] px-4">
         <img
           src={emptyCart}
-          alt="Empty Cart"
+          alt="Empty shopping cart illustration"
+          width="256"
+          height="256"
+          loading="eager"
           className="w-48 sm:w-64 mb-6 opacity-80"
         />
-        <h2 className="text-3xl font-bold text-[#155dfc] mb-3">
+        <h1 className="text-3xl font-bold text-[#155dfc] mb-3">
           Your Cart is Empty
-        </h2>
+        </h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">
           Looks like you haven't added anything yet
         </p>

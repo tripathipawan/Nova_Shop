@@ -20,11 +20,10 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="dns-prefetch" href="https://dummyjson.com" />
 
-  <!-- ─── PERFORMANCE: Preload LCP hero image ──────────────────────────── -->
-  <!-- Banner1.jpg is the above-the-fold hero — preloading it removes LCP delay -->
-  <link rel="preload" as="image" href="/src/assets/Banner1.jpg" fetchpriority="high" />
+  <!-- ─── PERFORMANCE: Preload LCP hero image (WebP = 104KB vs old JPG 402KB) ── -->
+  <link rel="preload" as="image" href="/src/assets/Banner1.webp" fetchpriority="high" />
 
-  <!-- ─── Open Graph (Facebook / LinkedIn / WhatsApp) ─────────────────── -->
+  <!-- ─── Open Graph ───────────────────────────────────────────────────── -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://knovashop.vercel.app/" />
   <meta property="og:title" content="NovaShop – Premium Online Shopping | Best Deals in India" />
@@ -47,10 +46,10 @@
   <link rel="icon" type="image/png" href="/src/assets/Favicon.png" />
   <link rel="apple-touch-icon" href="/src/assets/Favicon.png" />
 
-  <!-- ─── Theme color (PWA / mobile browser chrome) ───────────────────── -->
+  <!-- ─── Theme color ──────────────────────────────────────────────────── -->
   <meta name="theme-color" content="#155dfc" />
 
-  <!-- ─── GEO / Structured Data – Organization ────────────────────────── -->
+  <!-- ─── Structured Data – Organization ──────────────────────────────── -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -81,7 +80,7 @@
     }
     </script>
 
-  <!-- ─── GEO / Structured Data – WebSite + SearchAction ──────────────── -->
+  <!-- ─── Structured Data – WebSite + SearchAction ─────────────────────── -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -100,7 +99,7 @@
     }
     </script>
 
-  <!-- ─── GEO / Structured Data – OnlineStore ─────────────────────────── -->
+  <!-- ─── Structured Data – OnlineStore ───────────────────────────────── -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",

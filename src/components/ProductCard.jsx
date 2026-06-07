@@ -8,7 +8,6 @@ const ProductCard = memo(({ product }) => {
   const navigate    = useNavigate();
   const { addToCart } = useCart();
 
-  // Read wishlist from localStorage on mount
   const [wishlisted, setWishlisted] = useState(() => {
     try {
       const ids = JSON.parse(localStorage.getItem("wishlist") || "[]");
@@ -53,7 +52,7 @@ const ProductCard = memo(({ product }) => {
         </span>
       )}
 
-      {/* Wishlist heart — top right, always visible */}
+      {/* Wishlist heart */}
       <button
         onClick={toggleWishlist}
         aria-label={wishlisted ? `Remove ${product.title} from wishlist` : `Add ${product.title} to wishlist`}
@@ -61,20 +60,17 @@ const ProductCard = memo(({ product }) => {
         className={`absolute top-2 right-2 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow-sm border ${
           wishlisted
             ? "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-500"
-            : "bg-white/90 dark:bg-black/50 border-gray-200 dark:border-gray-700 text-gray-400 hover:text-red-500 hover:border-red-300"
+            : "bg-white/90 dark:bg-black/50 border-gray-200 dark:border-gray-700 text-gray-500 hover:text-red-500 hover:border-red-300"
         }`}
       >
         {wishlisted ? <IoHeart size={14} aria-hidden="true" /> : <IoHeartOutline size={14} aria-hidden="true" />}
       </button>
 
-      {/* Image — clickable */}
-      <div
+      {/* ✅ FIX: Removed role="button" from div — use a real button instead */}
+      <button
         onClick={goTo}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && goTo()}
         aria-label={`View ${product.title}`}
-        className="aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden cursor-pointer"
+        className="w-full aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden cursor-pointer block"
       >
         <img
           src={product.thumbnail}
@@ -87,13 +83,14 @@ const ProductCard = memo(({ product }) => {
           style={{ transition: "transform 0.25s ease" }}
           onError={(e) => { e.currentTarget.src = "https://placehold.co/300"; }}
         />
-      </div>
+      </button>
 
       {/* Info */}
       <div className="p-2.5 flex flex-col gap-1.5">
         {/* Brand */}
         {product.brand && (
-          <span className="text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded w-fit truncate max-w-full">
+          // ✅ FIX: was text-gray-400 on gray-100 bg — now text-gray-600 (passes contrast)
+          <span className="text-[10px] text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded w-fit truncate max-w-full">
             {product.brand}
           </span>
         )}
@@ -109,9 +106,10 @@ const ProductCard = memo(({ product }) => {
         {/* Rating */}
         {product.rating && (
           <div className="flex items-center gap-1" aria-label={`Rating: ${product.rating.toFixed(1)} out of 5`}>
-            <span className="text-yellow-400 text-xs" aria-hidden="true">
+            <span className="text-yellow-500 text-xs" aria-hidden="true">
               {"★".repeat(Math.round(product.rating))}{"☆".repeat(5 - Math.round(product.rating))}
             </span>
+            {/* ✅ FIX: was text-gray-500 which fails contrast on white — now text-gray-600 */}
             <span className="text-[11px] text-gray-600 dark:text-gray-400">{product.rating.toFixed(1)}</span>
           </div>
         )}
@@ -120,8 +118,9 @@ const ProductCard = memo(({ product }) => {
         <div className="flex items-baseline gap-1.5">
           <span className="text-base font-black text-[#155dfc]">${product.price}</span>
           {origPrice && (
-            <span className="text-[11px] text-gray-400 line-through" aria-label={`Original price $${origPrice}`}>
-              ${origPrice}
+            // ✅ FIX: aria-label on span is fine (non-interactive), removed prohibited usage
+            <span className="text-[11px] text-gray-500 dark:text-gray-400 line-through">
+              <span className="sr-only">Original price </span>${origPrice}
             </span>
           )}
         </div>
@@ -133,7 +132,7 @@ const ProductCard = memo(({ product }) => {
           aria-label={product.stock === 0 ? `${product.title} is out of stock` : `Add ${product.title} to cart`}
           className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold ${
             product.stock === 0
-              ? "bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+              ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
               : "bg-[#155dfc] hover:bg-[#1249d4] text-white"
           }`}
         >

@@ -1,7 +1,8 @@
 import { memo } from "react";
 import { FiShoppingBag, FiStar, FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Banner1 from "../../assets/Banner1.jpg";
+// WebP version: 104KB vs original 402KB JPG — fixes "Improve image delivery" audit
+import Banner1 from "../../assets/Banner1.webp";
 
 const Carousel = memo(() => {
   return (
@@ -9,7 +10,7 @@ const Carousel = memo(() => {
       aria-label="Hero banner"
       className="w-full overflow-hidden bg-gradient-to-r from-[#f8f6f1] to-[#efece5] dark:from-[#0f0f0f] dark:to-[#1a1a1a] relative"
     >
-      {/* Static background elements */}
+      {/* Background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40" aria-hidden="true">
         <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#155dfc]/10 rounded-full blur-3xl" />
         <div className="absolute rounded-full -bottom-20 -left-20 w-80 h-80 bg-pink-500/10 dark:bg-pink-500/5 blur-3xl" />
@@ -25,7 +26,6 @@ const Carousel = memo(() => {
               New Collection 2026 🚀
             </span>
 
-            {/* h1 — main page heading */}
             <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
               Elevate Your <br />
               <span className="bg-gradient-to-r from-[#155dfc] to-[#4f87ff] bg-clip-text text-transparent">
@@ -85,7 +85,7 @@ const Carousel = memo(() => {
                 aria-hidden="true"
               />
 
-              {/* Fixed dimensions → eliminates CLS */}
+              {/* Fixed aspect ratio → eliminates CLS */}
               <div
                 className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 dark:border-white/10 transition-transform duration-300 hover:scale-[1.02]"
                 style={{ aspectRatio: "4/3" }}
@@ -95,8 +95,8 @@ const Carousel = memo(() => {
                   alt="NovaShop — Premium products with fast delivery across India"
                   loading="eager"
                   fetchPriority="high"
-                  width="640"
-                  height="480"
+                  width="1280"
+                  height="853"
                   decoding="async"
                   className="object-cover object-center w-full h-full"
                 />
@@ -115,7 +115,7 @@ const Carousel = memo(() => {
               {/* Floating badge — Top Rated */}
               <div
                 className="absolute px-5 py-3 shadow-2xl top-2 right-2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl hover:scale-105 transition-transform duration-200"
-                aria-label="Rated 4.9 out of 5"
+                aria-label="Rated 4.9 out of 5 stars"
               >
                 <div className="flex items-center gap-2">
                   <FiStar className="text-white" size={20} aria-hidden="true" />
