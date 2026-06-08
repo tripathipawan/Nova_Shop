@@ -130,8 +130,15 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-            <span className="absolute bottom-0 h-[3px] rounded-full bg-[#155dfc] pointer-events-none"
-              style={{ left: bar.left, width: bar.width, transition: "left 0.2s ease, width 0.2s ease" }}
+            <span
+              className="absolute bottom-0 h-[3px] rounded-full bg-[#155dfc] pointer-events-none origin-left"
+              style={{
+                left: 0,
+                width: bar.width || 0,
+                transform: `translateX(${bar.left || 0}px)`,
+                transition: "transform 0.2s ease, width 0.2s ease",
+                willChange: "transform",
+              }}
             />
           </nav>
 

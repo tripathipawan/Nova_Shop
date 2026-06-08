@@ -117,7 +117,7 @@ const Wishlist = () => {
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 max-w-xs">
               Click the <span className="inline-flex items-center gap-1 text-red-500 font-semibold"><IoHeartOutline className="inline" size={14}/> heart icon</span> on any product card to save it here.
             </p>
-            <p className="text-gray-400 text-xs mb-6">You can add products from the Products page or any product detail page.</p>
+            <p className="text-gray-600 dark:text-gray-400 text-xs mb-6">You can add products from the Products page or any product detail page.</p>
             <button onClick={() => navigate("/products")}
               className="px-6 py-3 bg-[#155dfc] text-white font-bold rounded-xl hover:bg-[#1249d4]"
             >
@@ -170,7 +170,7 @@ const Wishlist = () => {
                     </h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-lg font-black text-[#155dfc]">${product.price}</span>
-                      {orig && <span className="text-xs text-gray-400 line-through">${orig}</span>}
+                      {orig && <span className="text-xs text-gray-500 dark:text-gray-400 line-through">${orig}</span>}
                     </div>
                     <div className="flex gap-2">
                       <button
@@ -178,7 +178,7 @@ const Wishlist = () => {
                         disabled={product.stock === 0}
                         className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold ${
                           product.stock === 0
-                            ? "bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+                            ? "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                             : "bg-[#155dfc] hover:bg-[#1249d4] text-white"
                         }`}
                       >

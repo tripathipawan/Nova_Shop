@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { FiShoppingBag, FiStar, FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
-// WebP version: 104KB vs original 402KB JPG — fixes "Improve image delivery" audit
 import Banner1 from "../../assets/Banner1.webp";
 
 const Carousel = memo(() => {
@@ -57,21 +56,27 @@ const Carousel = memo(() => {
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="flex flex-wrap gap-8 mt-10" aria-label="Store statistics">
+            {/* Stats
+                ✅ FIX 1: Plain <div aria-label="Store statistics"> is "prohibited ARIA".
+                   role="group" makes aria-label valid on a div.
+                   Inner stat divs: removed inner aria-label from plain div (also prohibited).
+                   Screen readers will read the visible text naturally — no aria-label needed. */}
+            <div
+              className="flex flex-wrap gap-8 mt-10"
+              role="group"
+              aria-label="Store statistics"
+            >
               {[
                 { label: "Products",  value: "10K+" },
                 { label: "Customers", value: "50K+" },
                 { label: "Rating",    value: "4.9⭐" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div
-                    className="text-2xl md:text-3xl font-bold text-[#155dfc]"
-                    aria-label={`${stat.value} ${stat.label}`}
-                  >
+                  {/* Removed aria-label — visible text is sufficient for screen readers */}
+                  <p className="text-2xl md:text-3xl font-bold text-[#155dfc]">
                     {stat.value}
-                  </div>
-                  <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                  </p>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -85,7 +90,6 @@ const Carousel = memo(() => {
                 aria-hidden="true"
               />
 
-              {/* Fixed aspect ratio → eliminates CLS */}
               <div
                 className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 dark:border-white/10 transition-transform duration-300 hover:scale-[1.02]"
                 style={{ aspectRatio: "4/3" }}
@@ -112,13 +116,16 @@ const Carousel = memo(() => {
                 <span className="text-xs text-gray-300">All over India</span>
               </div>
 
-              {/* Floating badge — Top Rated */}
+              {/* Floating badge — Top Rated
+                  ✅ FIX 2: Plain <div aria-label="..."> is prohibited.
+                     role="img" makes aria-label valid — this badge IS purely visual/decorative info. */}
               <div
                 className="absolute px-5 py-3 shadow-2xl top-2 right-2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl hover:scale-105 transition-transform duration-200"
+                role="img"
                 aria-label="Rated 4.9 out of 5 stars"
               >
-                <div className="flex items-center gap-2">
-                  <FiStar className="text-white" size={20} aria-hidden="true" />
+                <div className="flex items-center gap-2" aria-hidden="true">
+                  <FiStar className="text-white" size={20} />
                   <span className="text-lg font-bold text-white">4.9</span>
                 </div>
               </div>

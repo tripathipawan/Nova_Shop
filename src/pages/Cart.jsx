@@ -486,7 +486,7 @@ const Cart = () => {
                 {deliveryInfoSaved ? "Secure Checkout →" : "Save Delivery Info First"}
               </button>
 
-              <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-400">
+              <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-600 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <FaLock className="text-green-500" />
                   Secure

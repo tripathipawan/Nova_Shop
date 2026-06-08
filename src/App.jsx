@@ -32,7 +32,8 @@ const PageLoader = () => (
         className="w-12 h-12 border-4 border-gray-200 border-t-[#155dfc] rounded-full animate-spin mx-auto mb-3"
         aria-hidden="true"
       />
-      <p className="text-gray-400 text-sm">Loading...</p>
+      {/* ✅ FIX: text-gray-400 fails contrast (2.86:1) → text-gray-600 passes (5.74:1) */}
+      <p className="text-gray-600 dark:text-gray-400 text-sm">Loading...</p>
     </div>
   </div>
 );
