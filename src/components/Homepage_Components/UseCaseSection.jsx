@@ -41,11 +41,8 @@ const UseCaseSection = memo(() => {
               className="relative rounded-3xl p-6 text-left bg-white dark:bg-[#0f141a] border border-black/10 dark:border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group"
             >
               <div className={`h-1 w-14 rounded-full mb-5 bg-gradient-to-r ${item.color} transition-all duration-300 group-hover:w-24`} aria-hidden="true" />
-
               <h3 className="text-lg font-semibold text-black dark:text-white">{item.title}</h3>
-
               <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
-
               <span className="inline-block mt-4 text-sm font-semibold text-[#155dfc]" aria-hidden="true">
                 Explore →
               </span>

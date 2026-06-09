@@ -16,7 +16,6 @@ const CategoryProduct = () => {
 
   const category = params.category || searchParams.get('category')
 
-  // ✅ SEO for category pages
   const categoryName = category?.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || ''
   useSEO({
     title: categoryName ? `${categoryName} — NovaShop` : "Category — NovaShop",
@@ -67,7 +66,6 @@ const CategoryProduct = () => {
           <div className="inline-block p-6 mb-6 bg-gray-100 rounded-full dark:bg-gray-800" aria-hidden="true">
             <Package className="w-16 h-16 text-gray-400 dark:text-gray-600" />
           </div>
-          {/* ✅ FIX: h2 → h1 — this is the page's main heading when empty */}
           <h1 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">
             No Products Found
           </h1>
@@ -111,7 +109,6 @@ const CategoryProduct = () => {
           </button>
 
           <div style={{ animation: 'fadeInUp 0.5s ease-out' }}>
-            {/* ✅ h1 — correct, main heading of this page */}
             <h1 className="mb-3 text-4xl font-black text-white capitalize md:text-5xl drop-shadow-lg">
               {categoryName}
             </h1>
@@ -167,7 +164,6 @@ const CategoryProduct = () => {
           className="p-8 mt-12 text-center bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-900 dark:to-pink-900 rounded-2xl"
           style={{ animation: 'fadeInUp 0.6s ease-out 0.4s both' }}
         >
-          {/* ✅ FIX: h3 → h2 (comes after h1 above — correct hierarchy) */}
           <h2 className="mb-3 text-2xl font-bold text-white">
             Found what you&apos;re looking for?
           </h2>

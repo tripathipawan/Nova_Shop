@@ -96,7 +96,6 @@ const PolicyHub = () => {
 
         {/* Heading */}
         <div className="text-center mb-14">
-          {/* ✅ FIX: h2 → h1 — this is the page's main heading */}
           <h1 className="text-5xl font-extrabold text-center text-black lg:text-5xl md:text-4xl dark:text-white">
             Legal &amp; Policy{" "}
             <span className="text-[#155dfc]">Information</span>
@@ -105,8 +104,6 @@ const PolicyHub = () => {
             Transparency, trust &amp; customer-first commitment
           </p>
         </div>
-
-        {/* ✅ FIX: proper role=tablist for tab buttons */}
         <div
           role="tablist"
           aria-label="Policy sections"
@@ -142,7 +139,6 @@ const PolicyHub = () => {
 
         {/* Content Box */}
         <div className="bg-white dark:bg-[#11161c] rounded-2xl p-8 md:p-10 shadow-md">
-          {/* ✅ FIX: h2 — correct, comes after h1 above — hierarchy is h1 → h2 */}
           <h2
             id={`panel-${activeTab.key}`}
             role="tabpanel"

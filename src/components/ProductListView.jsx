@@ -9,9 +9,6 @@ const ProductListView = ({ product }) => {
   return (
     <article className="p-3 mt-2 space-y-4 rounded-md shadow-md bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center gap-4 md:flex-row md:gap-7">
-
-        {/* IMAGE SECTION */}
-        {/* ✅ FIX: added width/height to prevent CLS, loading=lazy, cursor via CSS */}
         <img
           src={product.thumbnail}
           alt={product.title}
@@ -26,8 +23,6 @@ const ProductListView = ({ product }) => {
 
         {/* DETAILS SECTION */}
         <div className="flex-1 w-full space-y-2">
-
-          {/* ✅ FIX: h1 → h3 — heading hierarchy fix (page already has h1) */}
           <h3
             className="font-bold text-lg md:text-xl line-clamp-3 text-[#000] dark:text-[#fff] cursor-pointer hover:text-[#155dfc] transition-colors"
             onClick={() => navigate(`/products/${product.id}`)}
@@ -50,8 +45,6 @@ const ProductListView = ({ product }) => {
             Or fastest delivery{" "}
             <span className="font-semibold">Tomorrow, 17 Apr</span>
           </p>
-
-          {/* ✅ FIX: aria-label on button */}
           <button
             onClick={() => addToCart(product)}
             aria-label={`Add ${product.title} to cart`}

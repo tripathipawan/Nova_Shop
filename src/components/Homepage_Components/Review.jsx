@@ -39,7 +39,6 @@ const reviews = [
   },
 ];
 
-/* GEO structured data for reviews */
 const reviewSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -59,7 +58,6 @@ const reviewSchema = {
 const Reviews = memo(() => {
   return (
     <section aria-labelledby="reviews-heading" className="bg-[#efeeea] dark:bg-[#080d10] py-10">
-      {/* Inline structured data for AI/search engines */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
@@ -72,9 +70,6 @@ const Reviews = memo(() => {
         >
           What Our <span className="text-[#155dfc]">Customers Say</span>
         </h2>
-
-        {/* ✅ FIX: Removed role="list" + role="listitem" on <article> — conflicting/prohibited ARIA.
-            Using <ul>/<li> which are natively list elements instead. */}
         <ul
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           aria-label="Customer reviews"
@@ -82,10 +77,9 @@ const Reviews = memo(() => {
           {reviews.map((item) => (
             <li key={item.name}>
               <article className="p-6 h-full transition-all duration-300 bg-white border dark:bg-black border-black/10 dark:border-white/25 rounded-2xl hover:shadow-lg hover:-translate-y-1">
-
-                {/* Stars */}
                 <div
                   className="flex mb-3"
+                  role="img"
                   aria-label={`${item.rating} out of 5 stars`}
                 >
                   {Array.from({ length: 5 }).map((_, i) => (

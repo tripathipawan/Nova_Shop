@@ -20,7 +20,6 @@ const About = () => {
     description: "Learn about NovaShop — India's premium online shopping destination with 10K+ products, 50K+ happy customers and 4.9 star ratings.",
   });
   return (
-    // Single CSS fadeIn — no library, zero lag
     <div
       className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#111] dark:to-[#1a1a1a] py-12 px-4 sm:px-6 lg:px-16"
       style={{ animation: "fadeUp 0.4s ease-out both" }}
@@ -72,14 +71,14 @@ const About = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4">
+        <dl className="grid grid-cols-3 gap-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center p-2 rounded-2xl bg-[#155dfc]/5 dark:bg-[#155dfc]/10 border border-[#155dfc]/20">
-              <div className="text-xl sm:text-3xl font-extrabold text-[#155dfc]">{s.value}</div>
-              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">{s.label}</div>
+              <dd className="text-xl sm:text-3xl font-extrabold text-[#155dfc]">{s.value}</dd>
+              <dt className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">{s.label}</dt>
             </div>
           ))}
-        </div>
+        </dl>
 
         {/* CTA */}
         <div className="text-center pt-2">

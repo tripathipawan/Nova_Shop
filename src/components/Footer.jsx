@@ -28,7 +28,6 @@ const Footer = () => {
     { Icon: FaPinterest,      name: 'Pinterest', link: 'https://pinterest.com/novashop' },
   ]
 
-  // Map customer service items to real internal links where possible
   const customerServices = [
     { label: 'Contact Us',        to: '/contact' },
     { label: 'Shipping & Returns', to: '/policyHub' },
@@ -157,7 +156,7 @@ const Footer = () => {
             </div>
 
             {/* Social Stats */}
-            <div className='grid grid-cols-3 gap-2 pt-4'>
+            <dl className='grid grid-cols-3 gap-2 pt-4'>
               {[
                 { stat: '10K+', label: 'Facebook' },
                 { stat: '5K+',  label: 'Instagram' },
@@ -167,11 +166,11 @@ const Footer = () => {
                   key={label}
                   className='p-2 text-center border border-gray-200 rounded-lg bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:border-gray-800 transition-transform duration-200 hover:scale-105'
                 >
-                  <div className='text-lg font-bold text-[#155dfc]'>{stat}</div>
-                  <div className='text-[10px] text-gray-500'>{label}</div>
+                  <dd className='text-lg font-bold text-[#155dfc]'>{stat}</dd>
+                  <dt className='text-[10px] text-gray-500'>{label}</dt>
                 </div>
               ))}
-            </div>
+            </dl>
           </div>
 
           {/* Newsletter */}
@@ -232,7 +231,7 @@ const Footer = () => {
                 <span className='text-sm font-bold text-white'>Special Offer!</span>
               </div>
               <p className='text-xs text-white'>
-                Get <span className='text-green-400 font-bold'>20% OFF</span> on your first order
+                Get <span className='text-[#fffb00] font-bold'>20% OFF</span> on your first order
               </p>
             </div>
           </div>

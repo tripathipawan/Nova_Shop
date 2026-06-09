@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import useSEO from "../hooks/useSEO";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, lazy, Suspense } from "react";
 import { getData } from "../context/DataContext";
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import FilterSection from "../components/FilterSection";
 import MobileFilter from "../components/MobileFilter";
 import Category from "../components/Homepage_Components/Category";
-import Lottie from "lottie-react";
 import notfound from "../assets/notfound.json";
 import Loading from "../assets/Loading4.webm";
 import { FiChevronDown } from "react-icons/fi";
+
+const Lottie = lazy(() => import("lottie-react"));
 
 const ITEMS_PER_PAGE = 12;
 
@@ -153,12 +154,12 @@ const Products = () => {
         ) : (
           <div className="flex gap-6">
 
-            {/* ── DESKTOP SIDEBAR ─────────────────────────────────────── */}
+            {/* ── DESKTOP SIDEBAR ── */}
             <div className="hidden lg:block shrink-0 w-56 xl:w-60">
               <FilterSection {...filterProps} />
             </div>
 
-            {/* ── PRODUCT AREA ─────────────────────────────────────────── */}
+            {/* ── PRODUCT AREA ── */}
             <div className="flex-1 min-w-0">
 
               {/* Showing X-Y of Z (desktop) */}
@@ -197,7 +198,11 @@ const Products = () => {
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 gap-3">
-                  <div className="w-52"><Lottie animationData={notfound} /></div>
+                  <div className="w-52">
+                    <Suspense fallback={<div className="w-52 h-52 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />}>
+                      <Lottie animationData={notfound} />
+                    </Suspense>
+                  </div>
                   <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                     No products match your filters.{" "}
                     <button

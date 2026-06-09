@@ -49,6 +49,11 @@ const Deals = memo(() => {
     return (
       <section aria-label="Deals loading" className="py-8 bg-white dark:bg-[#0a0a0a]">
         <div className="px-4 mx-auto max-w-7xl">
+          {/* Heading placeholder — same height as real heading to prevent CLS */}
+          <div className="my-6 text-center">
+            <div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse mx-auto mb-3" />
+            <div className="h-5 w-48 bg-gray-100 dark:bg-gray-700 rounded animate-pulse mx-auto mb-8" />
+          </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse" style={{ height: "288px" }} />

@@ -98,7 +98,7 @@ const SingleProduct = () => {
     }
   };
 
-  // ── Loading state ──────────────────────────────────────────────────────────
+  // ── Loading state ──
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading product">
@@ -119,7 +119,7 @@ const SingleProduct = () => {
     );
   }
 
-  // ── Error state ────────────────────────────────────────────────────────────
+  // ── Error state ──
   if (error || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center gap-4">
@@ -269,14 +269,14 @@ const SingleProduct = () => {
                 </span>
               )}
               {discount > 0 && (
-                <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                <span className="text-sm font-bold text-green-700 dark:text-emerald-300">
                   Save {Math.round(discount)}%
                 </span>
               )}
             </div>
 
             {/* Stock */}
-            <p className={`text-sm font-semibold ${inStock ? "text-green-600 dark:text-green-400" : "text-red-500"}`}>
+            <p className={`text-sm font-semibold ${inStock ? "text-green-700 dark:text-emerald-300" : "text-red-500"}`}>
               {inStock ? `✓ In Stock (${product.stock} available)` : "✗ Out of Stock"}
             </p>
 

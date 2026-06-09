@@ -55,15 +55,8 @@ const Carousel = memo(() => {
                 Explore Deals
               </Link>
             </div>
-
-            {/* Stats
-                ✅ FIX 1: Plain <div aria-label="Store statistics"> is "prohibited ARIA".
-                   role="group" makes aria-label valid on a div.
-                   Inner stat divs: removed inner aria-label from plain div (also prohibited).
-                   Screen readers will read the visible text naturally — no aria-label needed. */}
-            <div
+            <dl
               className="flex flex-wrap gap-8 mt-10"
-              role="group"
               aria-label="Store statistics"
             >
               {[
@@ -72,14 +65,13 @@ const Carousel = memo(() => {
                 { label: "Rating",    value: "4.9⭐" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  {/* Removed aria-label — visible text is sufficient for screen readers */}
-                  <p className="text-2xl md:text-3xl font-bold text-[#155dfc]">
+                  <dd className="text-2xl md:text-3xl font-bold text-[#155dfc]">
                     {stat.value}
-                  </p>
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
+                  </dd>
+                  <dt className="mt-1 text-sm text-gray-600 dark:text-gray-400">{stat.label}</dt>
                 </div>
               ))}
-            </div>
+            </dl>
           </div>
 
           {/* RIGHT VISUAL */}
@@ -115,10 +107,6 @@ const Carousel = memo(() => {
                 <p className="flex items-center text-sm text-white">⚡ Fast Delivery</p>
                 <span className="text-xs text-gray-300">All over India</span>
               </div>
-
-              {/* Floating badge — Top Rated
-                  ✅ FIX 2: Plain <div aria-label="..."> is prohibited.
-                     role="img" makes aria-label valid — this badge IS purely visual/decorative info. */}
               <div
                 className="absolute px-5 py-3 shadow-2xl top-2 right-2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl hover:scale-105 transition-transform duration-200"
                 role="img"

@@ -77,7 +77,6 @@ const MobileFilter = ({
 
           {/* Search */}
           <div>
-            {/* ✅ FIX: text-gray-400 (2.86:1 ratio, FAILS) → text-gray-600 (5.74:1, PASSES WCAG AA) */}
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-2">Search</p>
             <div className="relative">
               <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={13} aria-hidden="true" />
@@ -104,7 +103,6 @@ const MobileFilter = ({
 
           {/* Category */}
           <fieldset>
-            {/* ✅ FIX: text-gray-400 → text-gray-600 for contrast */}
             <legend className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-2">Category</legend>
             <div className="flex flex-col gap-0.5 max-h-48 overflow-y-auto overscroll-contain">
               {categoryOnlyData?.map((cat, i) => (
@@ -127,7 +125,6 @@ const MobileFilter = ({
 
           {/* Brand */}
           <div>
-            {/* ✅ FIX: text-gray-400 → text-gray-600 for contrast */}
             <label htmlFor="mob-brand" className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-2 block">Brand</label>
             <div className="relative">
               <select
@@ -147,7 +144,6 @@ const MobileFilter = ({
           {/* Price Range */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              {/* ✅ FIX: text-gray-400 → text-gray-600 for contrast */}
               <label htmlFor="mob-price" className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Price</label>
               <span className="text-xs font-bold text-[#155dfc]">${priceRange[0]} – ${priceRange[1]}</span>
             </div>
@@ -164,7 +160,6 @@ const MobileFilter = ({
               aria-valuenow={priceRange[1]}
               className="w-full accent-[#155dfc] cursor-pointer"
             />
-            {/* ✅ FIX: text-gray-400 → text-gray-600 for contrast */}
             <div className="flex justify-between text-[10px] text-gray-600 dark:text-gray-400 font-medium mt-1" aria-hidden="true">
               <span>$0</span><span>$5000</span>
             </div>

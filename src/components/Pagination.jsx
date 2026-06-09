@@ -13,7 +13,6 @@ const Pagination = ({ page, pageHandler, dynamicPage: total }) => {
     "min-w-[36px] h-9 rounded-lg text-sm font-semibold border transition-colors duration-150 flex items-center justify-center px-2";
 
   return (
-    // KEY FIX: flex + justify-center centers everything
     <div className="flex items-center justify-center gap-1.5 py-6 flex-wrap">
       {/* Prev */}
       <button

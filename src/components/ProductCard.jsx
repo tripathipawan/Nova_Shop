@@ -65,8 +65,6 @@ const ProductCard = memo(({ product }) => {
       >
         {wishlisted ? <IoHeart size={14} aria-hidden="true" /> : <IoHeartOutline size={14} aria-hidden="true" />}
       </button>
-
-      {/* Image — real button for keyboard accessibility */}
       <button
         onClick={goTo}
         aria-label={`View ${product.title}`}
@@ -87,8 +85,6 @@ const ProductCard = memo(({ product }) => {
 
       {/* Info */}
       <div className="p-2.5 flex flex-col gap-1.5">
-
-        {/* Brand — text-gray-600 passes contrast (5.74:1 on white) */}
         {product.brand && (
           <span className="text-[10px] text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded w-fit truncate max-w-full">
             {product.brand}
@@ -102,10 +98,6 @@ const ProductCard = memo(({ product }) => {
         >
           {product.title}
         </h3>
-
-        {/* Rating
-            ✅ FIX: aria-label on plain <div> is "prohibited ARIA" per Lighthouse.
-               Added role="group" → makes aria-label valid on this div. */}
         {product.rating && (
           <div
             className="flex items-center gap-1"
@@ -115,7 +107,6 @@ const ProductCard = memo(({ product }) => {
             <span className="text-yellow-500 text-xs" aria-hidden="true">
               {"★".repeat(Math.round(product.rating))}{"☆".repeat(5 - Math.round(product.rating))}
             </span>
-            {/* text-gray-600 = 5.74:1 contrast on white — passes WCAG AA ✅ */}
             <span className="text-[11px] text-gray-600 dark:text-gray-400">{product.rating.toFixed(1)}</span>
           </div>
         )}

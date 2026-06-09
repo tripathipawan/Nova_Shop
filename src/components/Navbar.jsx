@@ -89,7 +89,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Skip to main content — accessibility */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-[#155dfc] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold"
@@ -136,7 +135,7 @@ const Navbar = () => {
                 left: 0,
                 width: bar.width || 0,
                 transform: `translateX(${bar.left || 0}px)`,
-                transition: "transform 0.2s ease, width 0.2s ease",
+                transition: "transform 0.2s ease",
                 willChange: "transform",
               }}
             />
@@ -144,7 +143,6 @@ const Navbar = () => {
 
           {/* Right Controls */}
           <div className="flex items-center gap-1.5">
-            {/* ✅ FIX: aria-label added to wishlist link */}
             <Link to="/wishlist"
               aria-label="Go to wishlist"
               className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
@@ -152,7 +150,6 @@ const Navbar = () => {
               <IoHeartOutline size={20} aria-hidden="true" />
             </Link>
 
-            {/* ✅ FIX: aria-label added to cart link */}
             <Link to="/cart" onClick={handleCartClick}
               aria-label={`Cart${cartItem.length > 0 ? `, ${cartItem.length} items` : ""}`}
               className="hidden lg:flex relative w-10 h-10 items-center justify-center rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -164,8 +161,6 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-
-            {/* ✅ FIX: aria-label added to dark mode toggle button */}
             <button onClick={toggleDark}
               aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl bg-[#155dfc]/10 hover:bg-[#155dfc] text-[#155dfc] hover:text-white transition-colors"
@@ -197,10 +192,11 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
-        {/* Scroll progress bar */}
-        <div className="h-[2px] bg-gray-100 dark:bg-gray-800" aria-hidden="true">
-          <div className="h-full bg-[#155dfc]" style={{ width: `${scrollPct}%`, transition: "none" }} />
+        <div className="h-[2px] bg-gray-100 dark:bg-gray-800 overflow-hidden" aria-hidden="true">
+          <div
+            className="h-full w-full bg-[#155dfc] origin-left"
+            style={{ transform: `scaleX(${scrollPct / 100})`, transition: "none" }}
+          />
         </div>
       </header>
 
@@ -282,8 +278,6 @@ const Navbar = () => {
             >
               <IoHeartOutline size={16} aria-hidden="true" /> My Wishlist
             </Link>
-
-            {/* ✅ FIX: Dark mode toggle in sidebar — aria-label added */}
             <button onClick={toggleDark}
               aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"

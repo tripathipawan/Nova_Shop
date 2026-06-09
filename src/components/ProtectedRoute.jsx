@@ -4,8 +4,6 @@ import { FaLock } from "react-icons/fa";
 
 const ProtectedRoute = ({ children }) => {
   const { user, isLoaded } = useUser();
-
-  // Wait for Clerk to load before deciding
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -15,7 +13,6 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
-    // Show a proper sign-in prompt instead of silent redirect
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 dark:bg-[#0f0f0f] px-4">
         <div className="text-center max-w-sm">
