@@ -14,14 +14,17 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
 }
 
-const CLERK_PROXY_URL = `${window.location.origin}/clerk-proxy`
+const isProduction = window.location.protocol === 'https:'
+const CLERK_PROXY_URL = isProduction
+  ? `${window.location.origin}/clerk-proxy`
+  : undefined
 
 createRoot(document.getElementById('root')).render(
   <DataProvider>
     <CartProvider>
       <ClerkProvider
         publishableKey={PUBLISHABLE_KEY}
-        proxyUrl={CLERK_PROXY_URL}
+        {...(CLERK_PROXY_URL ? { proxyUrl: CLERK_PROXY_URL } : {})}
         afterSignOutUrl="/"
       >
         <App />
